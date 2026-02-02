@@ -6,91 +6,169 @@
     <title>For My Chinnu ♥️</title>
     <style>
         * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        
         body {
-            margin: 0; height: 100vh; display: flex; align-items: center; justify-content: center;
+            margin: 0;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             background: linear-gradient(180deg, #ffafbd 0%, #ffc3a0 100%);
-            font-family: 'Arial', sans-serif; overflow: hidden; touch-action: manipulation;
+            font-family: 'Arial', sans-serif;
+            overflow: hidden;
+            touch-action: manipulation;
         }
-        /* Mobile Start Overlay */
+
+        /* Sparkle Background Effect */
+        .sparkle {
+            position: absolute;
+            width: 3px;
+            height: 3px;
+            background: white;
+            border-radius: 50%;
+            opacity: 0;
+            animation: twinkle 2s infinite;
+        }
+
+        @keyframes twinkle {
+            0% { transform: scale(0); opacity: 0; }
+            50% { transform: scale(1.5); opacity: 0.8; }
+            100% { transform: scale(0); opacity: 0; }
+        }
+
+        /* The Card */
+        .card {
+            background: rgba(255, 255, 255, 0.9);
+            padding: 30px;
+            border-radius: 25px;
+            box-shadow: 0 15px 35px rgba(214, 51, 132, 0.3);
+            text-align: center;
+            width: 85%;
+            max-width: 350px;
+            z-index: 100; /* Keeps card above sparkles */
+            border: 5px solid #fff;
+        }
+
+        h1 { color: #d63384; font-size: 1.5rem; margin-bottom: 25px; }
+
+        .btn-wrap { height: 120px; position: relative; }
+
+        button {
+            padding: 15px 30px;
+            font-size: 1.1rem;
+            border-radius: 50px;
+            border: none;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        #yesBtn { background: #ff4d6d; color: white; width: 180px; box-shadow: 0 4px 10px rgba(255, 77, 109, 0.3); }
+
+        #noBtn {
+            background: #fff;
+            color: #888;
+            border: 2px solid #eee;
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+        }
+
+        .heart-rain {
+            position: absolute;
+            color: #ff4d6d;
+            font-size: 25px;
+            z-index: 1000;
+            pointer-events: none;
+            animation: fall 3s linear forwards;
+        }
+
+        @keyframes fall {
+            to { transform: translateY(110vh) rotate(360deg); }
+        }
+
         #overlay {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(255,255,255,0.95); z-index: 100;
-            display: flex; flex-direction: column; align-items: center; justify-content: center;
-            transition: 0.5s;
+            background: white; z-index: 2000; display: flex;
+            flex-direction: column; align-items: center; justify-content: center;
         }
-        .card {
-            background: rgba(255, 255, 255, 0.9); padding: 40px 20px; border-radius: 30px;
-            box-shadow: 0 15px 35px rgba(214, 51, 132, 0.2); text-align: center;
-            width: 85%; max-width: 350px; z-index: 10; border: 4px solid #fff;
-        }
-        h1 { color: #d63384; font-size: 1.6rem; margin-bottom: 30px; }
-        #yesBtn { background: #ff4d6d; color: white; padding: 15px 40px; border-radius: 50px; border: none; font-weight: bold; width: 200px; }
-        #noBtn { background: #fff; color: #888; border: 2px solid #eee; padding: 10px 20px; border-radius: 50px; width: 100px; transition: 0.1s; }
+
         .hidden { display: none !important; }
-        .heart-float { position: absolute; color: #ff4d6d; font-size: 25px; animation: floatUp 4s forwards linear; z-index: 5; }
-        @keyframes floatUp { 0% { transform: translateY(0); opacity: 1; } 100% { transform: translateY(-100vh); opacity: 0; } }
     </style>
 </head>
 <body>
 
-    <div id="overlay" onclick="startExperience()">
-        <p style="color: #d63384; font-weight: bold;">Tap to Open your Surprise 🎁</p>
-        <div style="font-size: 40px;">❤️</div>
+    <div id="overlay" onclick="startSurprise()">
+        <h2 style="color: #ff4d6d;">A gift for Chinnu 🎁</h2>
+        <p>Tap to open</p>
     </div>
 
-    <audio id="myMusic" loop>
+    <audio id="bgMusic" loop>
         <source src="valentine.mp3" type="audio/mpeg">
     </audio>
 
     <div class="card">
-        <div id="quizSection">
-            <div style="font-size: 50px;">🧸</div>
+        <div id="mainContent">
+            <div style="font-size: 40px;">🐱</div>
             <h1>Chinnu, will you be my valentine?</h1>
-            <button id="yesBtn">Yes! 💖</button><br><br>
-            <button id="noBtn">No 🥺</button>
+            <div class="btn-wrap">
+                <button id="yesBtn">YES! 💖</button><br><br>
+                <button id="noBtn">No 🥺</button>
+            </div>
         </div>
 
-        <div id="successSection" class="hidden">
-            <h1>It's a date! ❤️</h1>
-            <img src="celebration.gif" style="width: 100%; border-radius: 15px;">
+        <div id="successContent" class="hidden">
+            <h1 id="successText">Yay! It's a date! ❤️</h1>
+            <img id="celebrationGif" src="https://media1.giphy.com/media/v1.Y2lkPTc5MGI3NjExOHIwdWswYm10bmZqbmZpbmZqbmZpbmZqbmZpbmZqbmZpbmZqbmZpbmZqJmVwPXYxX2ludGVybmFsX2dpZl9ieV9pZCZjdD1n/l0MYt5jRKzAFnMBe8/giphy.gif" style="width: 100%; border-radius: 15px;">
         </div>
     </div>
 
     <script>
-        const music = document.getElementById('myMusic');
-        function startExperience() {
-            document.getElementById('overlay').style.opacity = '0';
-            setTimeout(() => document.getElementById('overlay').remove(), 500);
-            music.play();
+        // 1. Sparkle Background
+        for (let i = 0; i < 50; i++) {
+            let s = document.createElement('div');
+            s.className = 'sparkle';
+            s.style.left = Math.random() * 100 + 'vw';
+            s.style.top = Math.random() * 100 + 'vh';
+            s.style.animationDelay = Math.random() * 2 + 's';
+            document.body.appendChild(s);
         }
 
-        const noBtn = document.getElementById('noBtn');
-        noBtn.addEventListener('touchstart', moveButton);
-        noBtn.addEventListener('mouseover', moveButton);
+        function startSurprise() {
+            document.getElementById('overlay').classList.add('hidden');
+            document.getElementById('bgMusic').play();
+        }
 
-        function moveButton(e) {
-            e.preventDefault();
+        // 2. No Button "Escape" Logic
+        const noBtn = document.getElementById('noBtn');
+        const moveNo = () => {
             const x = Math.random() * (window.innerWidth - 100);
             const y = Math.random() * (window.innerHeight - 50);
             noBtn.style.position = 'fixed';
             noBtn.style.left = x + 'px';
             noBtn.style.top = y + 'px';
-        }
+        };
 
+        noBtn.addEventListener('touchstart', (e) => { e.preventDefault(); moveNo(); });
+        noBtn.addEventListener('mouseover', moveNo);
+
+        // 3. Success Logic
         document.getElementById('yesBtn').addEventListener('click', () => {
-            document.getElementById('quizSection').classList.add('hidden');
-            document.getElementById('successSection').classList.remove('hidden');
-            setInterval(createHeart, 300);
+            document.getElementById('mainContent').classList.add('hidden');
+            document.getElementById('successContent').classList.remove('hidden');
+            noBtn.classList.add('hidden');
+            setInterval(createHeart, 200);
         });
 
         function createHeart() {
             const h = document.createElement('div');
-            h.className = 'heart-float';
+            h.className = 'heart-rain';
             h.innerHTML = '❤️';
             h.style.left = Math.random() * 100 + 'vw';
-            h.style.top = '100vh';
+            h.style.top = '-50px';
             document.body.appendChild(h);
-            setTimeout(() => h.remove(), 4000);
+            setTimeout(() => h.remove(), 3000);
         }
     </script>
 </body>
