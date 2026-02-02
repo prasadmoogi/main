@@ -3,105 +3,48 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>For My Chinnu ♥️</title>
+    <title>For Chinnu ♥️</title>
     <style>
         * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-        
         body {
-            margin: 0;
-            height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            margin: 0; height: 100vh; display: flex; align-items: center; justify-content: center;
             background: linear-gradient(180deg, #ffafbd 0%, #ffc3a0 100%);
-            font-family: 'Arial', sans-serif;
-            overflow: hidden;
-            touch-action: manipulation;
+            font-family: 'Arial', sans-serif; overflow: hidden; touch-action: manipulation;
         }
-
-        /* Sparkle Background Effect */
-        .sparkle {
-            position: absolute;
-            width: 3px;
-            height: 3px;
-            background: white;
-            border-radius: 50%;
-            opacity: 0;
-            animation: twinkle 2s infinite;
-        }
-
-        @keyframes twinkle {
-            0% { transform: scale(0); opacity: 0; }
-            50% { transform: scale(1.5); opacity: 0.8; }
-            100% { transform: scale(0); opacity: 0; }
-        }
-
-        /* The Card */
         .card {
-            background: rgba(255, 255, 255, 0.9);
-            padding: 30px;
-            border-radius: 25px;
-            box-shadow: 0 15px 35px rgba(214, 51, 132, 0.3);
-            text-align: center;
-            width: 85%;
-            max-width: 350px;
-            z-index: 100; /* Keeps card above sparkles */
-            border: 5px solid #fff;
+            background: rgba(255, 255, 255, 0.95); padding: 30px 20px; border-radius: 30px;
+            box-shadow: 0 15px 35px rgba(214, 51, 132, 0.3); text-align: center;
+            width: 90%; max-width: 350px; z-index: 100; border: 5px solid #fff;
+            position: relative;
         }
-
-        h1 { color: #d63384; font-size: 1.5rem; margin-bottom: 25px; }
-
-        .btn-wrap { height: 120px; position: relative; }
-
-        button {
-            padding: 15px 30px;
-            font-size: 1.1rem;
-            border-radius: 50px;
-            border: none;
-            font-weight: bold;
-            cursor: pointer;
-            transition: 0.2s;
+        h1 { color: #d63384; font-size: 1.5rem; margin-bottom: 20px; position: relative; z-index: 101; }
+        .btn-container { height: 150px; position: relative; width: 100%; }
+        #yesBtn {
+            background: #ff4d6d; color: white; padding: 15px 40px; border-radius: 50px;
+            border: none; font-weight: bold; width: 200px; font-size: 1.2rem;
+            box-shadow: 0 5px 15px rgba(255, 77, 109, 0.4); cursor: pointer;
         }
-
-        #yesBtn { background: #ff4d6d; color: white; width: 180px; box-shadow: 0 4px 10px rgba(255, 77, 109, 0.3); }
-
         #noBtn {
-            background: #fff;
-            color: #888;
-            border: 2px solid #eee;
-            position: absolute;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 100px;
+            background: #fff; color: #888; border: 2px solid #eee; padding: 10px 20px;
+            border-radius: 50px; width: 100px; transition: 0.1s ease;
+            position: absolute; left: 50%; transform: translateX(-50%); cursor: pointer;
         }
-
-        .heart-rain {
-            position: absolute;
-            color: #ff4d6d;
-            font-size: 25px;
-            z-index: 1000;
-            pointer-events: none;
-            animation: fall 3s linear forwards;
-        }
-
-        @keyframes fall {
-            to { transform: translateY(110vh) rotate(360deg); }
-        }
-
+        #funnyText { color: #ff4d6d; font-weight: bold; min-height: 25px; margin-top: 10px; font-size: 1rem; }
+        .hidden { display: none !important; }
         #overlay {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: white; z-index: 2000; display: flex;
-            flex-direction: column; align-items: center; justify-content: center;
+            background: white; z-index: 2000; display: flex; flex-direction: column;
+            align-items: center; justify-content: center; text-align: center;
         }
-
-        .hidden { display: none !important; }
+        .heart-float { position: absolute; font-size: 25px; animation: fall 3s linear forwards; z-index: 50; }
+        @keyframes fall { to { transform: translateY(110vh) rotate(360deg); } }
     </style>
 </head>
 <body>
 
-    <div id="overlay" onclick="startSurprise()">
-        <h2 style="color: #ff4d6d;">A gift for Chinnu 🎁</h2>
-        <p>Tap to open</p>
+    <div id="overlay" onclick="start()">
+        <h2 style="color: #ff4d6d;">A surprise for Chinnu 🎁</h2>
+        <p>Tap to open ❤️</p>
     </div>
 
     <audio id="bgMusic" loop>
@@ -109,61 +52,57 @@
     </audio>
 
     <div class="card">
-        <div id="mainContent">
-            <div style="font-size: 40px;">🐱</div>
+        <div id="quizSection">
+            <div style="font-size: 50px;">🧸</div>
             <h1>Chinnu, will you be my valentine?</h1>
-            <div class="btn-wrap">
-                <button id="yesBtn">YES! 💖</button><br><br>
+            <div class="btn-container">
+                <button id="yesBtn">Yes! 💖</button><br><br>
                 <button id="noBtn">No 🥺</button>
             </div>
+            <p id="funnyText"></p>
         </div>
 
-        <div id="successContent" class="hidden">
-            <h1 id="successText">Yay! It's a date! ❤️</h1>
-            <img id="celebrationGif" src="https://media1.giphy.com/media/v1.Y2lkPTc5MGI3NjExOHIwdWswYm10bmZqbmZpbmZqbmZpbmZqbmZpbmZqbmZpbmZqbmZpbmZqJmVwPXYxX2ludGVybmFsX2dpZl9ieV9pZCZjdD1n/l0MYt5jRKzAFnMBe8/giphy.gif" style="width: 100%; border-radius: 15px;">
+        <div id="successSection" class="hidden">
+            <h1>It's a date! ❤️</h1>
+            <img src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExOHIwdWswYm10bmZqbmZpbmZqbmZpbmZqbmZpbmZqbmZpbmZqbmZpbmZqJmVwPXYxX2ludGVybmFsX2dpZl9ieV9pZCZjdD1n/l0MYt5jRKzAFnMBe8/giphy.gif" style="width: 100%; border-radius: 15px;">
         </div>
     </div>
 
     <script>
-        // 1. Sparkle Background
-        for (let i = 0; i < 50; i++) {
-            let s = document.createElement('div');
-            s.className = 'sparkle';
-            s.style.left = Math.random() * 100 + 'vw';
-            s.style.top = Math.random() * 100 + 'vh';
-            s.style.animationDelay = Math.random() * 2 + 's';
-            document.body.appendChild(s);
-        }
-
-        function startSurprise() {
-            document.getElementById('overlay').classList.add('hidden');
-            document.getElementById('bgMusic').play();
-        }
-
-        // 2. No Button "Escape" Logic
+        const music = document.getElementById('bgMusic');
+        const funnyText = document.getElementById('funnyText');
         const noBtn = document.getElementById('noBtn');
-        const moveNo = () => {
-            const x = Math.random() * (window.innerWidth - 100);
-            const y = Math.random() * (window.innerHeight - 50);
+        const phrases = ["Haha, nice try! 😉", "You can't escape love! ❤️", "Just say Yes already! ✨", "No seems a bit shy... 🙈"];
+
+        function start() {
+            document.getElementById('overlay').classList.add('hidden');
+            music.play().catch(e => console.log("Music play blocked"));
+        }
+
+        function moveNo(e) {
+            if(e) e.preventDefault();
+            const x = Math.random() * (window.innerWidth - 120);
+            const y = Math.random() * (window.innerHeight - 60);
             noBtn.style.position = 'fixed';
             noBtn.style.left = x + 'px';
             noBtn.style.top = y + 'px';
-        };
+            noBtn.style.zIndex = "500";
+            funnyText.innerText = phrases[Math.floor(Math.random() * phrases.length)];
+        }
 
-        noBtn.addEventListener('touchstart', (e) => { e.preventDefault(); moveNo(); });
+        noBtn.addEventListener('touchstart', moveNo);
         noBtn.addEventListener('mouseover', moveNo);
 
-        // 3. Success Logic
         document.getElementById('yesBtn').addEventListener('click', () => {
-            document.getElementById('mainContent').classList.add('hidden');
-            document.getElementById('successContent').classList.remove('hidden');
+            document.getElementById('quizSection').classList.add('hidden');
+            document.getElementById('successSection').classList.remove('hidden');
             noBtn.classList.add('hidden');
-            setInterval(createHeart, 200);
+            setInterval(createHeart, 250);
         });
 
         function createHeart() {
             const h = document.createElement('div');
-            h.className = 'heart-rain';
+            h.className = 'heart-float';
             h.innerHTML = '❤️';
             h.style.left = Math.random() * 100 + 'vw';
             h.style.top = '-50px';
